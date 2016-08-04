@@ -1,0 +1,12 @@
+{"namespace": "tarun.learning.org.tweet.core.schema",
+ "type": "record",
+ "name": "Tweet",
+ "fields": [
+     {"name": "id", "type": "long"},
+     {"name": "text",  "type": ["string", "null"]},
+     {"name": "retweetCount",  "type": "int"},
+     {"name": "favouriteCount",  "type": "int"},
+     {"name": "hashTags", "type" : {"type": "array", "items": "string"}},
+     {"name": "urls", "type" : {"type": "array", "items": "string"}}
+ ]
+}
