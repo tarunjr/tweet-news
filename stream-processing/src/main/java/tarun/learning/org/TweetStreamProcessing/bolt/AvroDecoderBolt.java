@@ -21,13 +21,13 @@ public class AvroDecoderBolt extends BaseRichBolt{
 	public static final String BOLT_NAME = "AvroDecoderBolt";
 	public static final String FIELD_ID = "id";
 	public static final String FIELD_OBJECT = "object";
-	
+
 	private OutputCollector collector;
 	private AvroBinaryDecoder<Tweet> decoder;
-	
+
 	public void execute(Tuple tuple) {
 		byte[] bytes = tuple.getBinaryByField("bytes");
-		
+
 		Tweet tweetAvro = decoder.decode(bytes);
 		TweetData data = tranform(tweetAvro);
 		collector.emit(new Values(data.getId(), data));
@@ -35,17 +35,18 @@ public class AvroDecoderBolt extends BaseRichBolt{
 	private TweetData tranform(Tweet tweetAvro) {
 		List<String> urls = new ArrayList<String>();
 		List<String> hashTags = new ArrayList<String>();
-		
+
 		for(CharSequence cs: tweetAvro.getHashTags()) {
 			hashTags.add(cs.toString());
 		}
 		for(CharSequence cs: tweetAvro.getUrls()) {
 			urls.add(cs.toString());
 		}
-		
-		TweetData data = new TweetData(tweetAvro.getId(), 
-										tweetAvro.getText().toString(), 
-										tweetAvro.getRetweetCount(), 
+
+		TweetData data = new TweetData(tweetAvro.getId(),
+										tweetAvro.getText().toString(),
+										tweetAvro.getScreenname().toString(),
+										tweetAvro.getRetweetCount(),
 										tweetAvro.getFavouriteCount(),
 										hashTags,
 										urls);
@@ -55,7 +56,7 @@ public class AvroDecoderBolt extends BaseRichBolt{
 	public void prepare(Map map, TopologyContext context, OutputCollector collector) {
 		this.collector = collector;
 		this.decoder = new AvroBinaryDecoder<Tweet>(Tweet.class);
-		
+
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {

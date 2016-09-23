@@ -3,6 +3,7 @@
  "name": "Tweet",
  "fields": [
      {"name": "id", "type": "long"},
+     {"name": "screenname", "type": ["string", "null"]},
      {"name": "text",  "type": ["string", "null"]},
      {"name": "retweetCount",  "type": "int"},
      {"name": "favouriteCount",  "type": "int"},

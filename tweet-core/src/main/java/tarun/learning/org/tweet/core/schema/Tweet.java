@@ -7,9 +7,10 @@ package tarun.learning.org.tweet.core.schema;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Tweet extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Tweet\",\"namespace\":\"tarun.learning.org.tweet.core.schema\",\"fields\":[{\"name\":\"id\",\"type\":\"long\"},{\"name\":\"text\",\"type\":[\"string\",\"null\"]},{\"name\":\"retweetCount\",\"type\":\"int\"},{\"name\":\"favouriteCount\",\"type\":\"int\"},{\"name\":\"hashTags\",\"type\":{\"type\":\"array\",\"items\":\"string\"}},{\"name\":\"urls\",\"type\":{\"type\":\"array\",\"items\":\"string\"}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Tweet\",\"namespace\":\"tarun.learning.org.tweet.core.schema\",\"fields\":[{\"name\":\"id\",\"type\":\"long\"},{\"name\":\"screenname\",\"type\":[\"string\",\"null\"]},{\"name\":\"text\",\"type\":[\"string\",\"null\"]},{\"name\":\"retweetCount\",\"type\":\"int\"},{\"name\":\"favouriteCount\",\"type\":\"int\"},{\"name\":\"hashTags\",\"type\":{\"type\":\"array\",\"items\":\"string\"}},{\"name\":\"urls\",\"type\":{\"type\":\"array\",\"items\":\"string\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   @Deprecated public long id;
+  @Deprecated public java.lang.CharSequence screenname;
   @Deprecated public java.lang.CharSequence text;
   @Deprecated public int retweetCount;
   @Deprecated public int favouriteCount;
@@ -26,8 +27,9 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
   /**
    * All-args constructor.
    */
-  public Tweet(java.lang.Long id, java.lang.CharSequence text, java.lang.Integer retweetCount, java.lang.Integer favouriteCount, java.util.List<java.lang.CharSequence> hashTags, java.util.List<java.lang.CharSequence> urls) {
+  public Tweet(java.lang.Long id, java.lang.CharSequence screenname, java.lang.CharSequence text, java.lang.Integer retweetCount, java.lang.Integer favouriteCount, java.util.List<java.lang.CharSequence> hashTags, java.util.List<java.lang.CharSequence> urls) {
     this.id = id;
+    this.screenname = screenname;
     this.text = text;
     this.retweetCount = retweetCount;
     this.favouriteCount = favouriteCount;
@@ -40,11 +42,12 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return id;
-    case 1: return text;
-    case 2: return retweetCount;
-    case 3: return favouriteCount;
-    case 4: return hashTags;
-    case 5: return urls;
+    case 1: return screenname;
+    case 2: return text;
+    case 3: return retweetCount;
+    case 4: return favouriteCount;
+    case 5: return hashTags;
+    case 6: return urls;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -53,11 +56,12 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = (java.lang.Long)value$; break;
-    case 1: text = (java.lang.CharSequence)value$; break;
-    case 2: retweetCount = (java.lang.Integer)value$; break;
-    case 3: favouriteCount = (java.lang.Integer)value$; break;
-    case 4: hashTags = (java.util.List<java.lang.CharSequence>)value$; break;
-    case 5: urls = (java.util.List<java.lang.CharSequence>)value$; break;
+    case 1: screenname = (java.lang.CharSequence)value$; break;
+    case 2: text = (java.lang.CharSequence)value$; break;
+    case 3: retweetCount = (java.lang.Integer)value$; break;
+    case 4: favouriteCount = (java.lang.Integer)value$; break;
+    case 5: hashTags = (java.util.List<java.lang.CharSequence>)value$; break;
+    case 6: urls = (java.util.List<java.lang.CharSequence>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -75,6 +79,21 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
    */
   public void setId(java.lang.Long value) {
     this.id = value;
+  }
+
+  /**
+   * Gets the value of the 'screenname' field.
+   */
+  public java.lang.CharSequence getScreenname() {
+    return screenname;
+  }
+
+  /**
+   * Sets the value of the 'screenname' field.
+   * @param value the value to set.
+   */
+  public void setScreenname(java.lang.CharSequence value) {
+    this.screenname = value;
   }
 
   /**
@@ -174,6 +193,7 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
     implements org.apache.avro.data.RecordBuilder<Tweet> {
 
     private long id;
+    private java.lang.CharSequence screenname;
     private java.lang.CharSequence text;
     private int retweetCount;
     private int favouriteCount;
@@ -192,25 +212,29 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.text)) {
-        this.text = data().deepCopy(fields()[1].schema(), other.text);
+      if (isValidValue(fields()[1], other.screenname)) {
+        this.screenname = data().deepCopy(fields()[1].schema(), other.screenname);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.retweetCount)) {
-        this.retweetCount = data().deepCopy(fields()[2].schema(), other.retweetCount);
+      if (isValidValue(fields()[2], other.text)) {
+        this.text = data().deepCopy(fields()[2].schema(), other.text);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.favouriteCount)) {
-        this.favouriteCount = data().deepCopy(fields()[3].schema(), other.favouriteCount);
+      if (isValidValue(fields()[3], other.retweetCount)) {
+        this.retweetCount = data().deepCopy(fields()[3].schema(), other.retweetCount);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.hashTags)) {
-        this.hashTags = data().deepCopy(fields()[4].schema(), other.hashTags);
+      if (isValidValue(fields()[4], other.favouriteCount)) {
+        this.favouriteCount = data().deepCopy(fields()[4].schema(), other.favouriteCount);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.urls)) {
-        this.urls = data().deepCopy(fields()[5].schema(), other.urls);
+      if (isValidValue(fields()[5], other.hashTags)) {
+        this.hashTags = data().deepCopy(fields()[5].schema(), other.hashTags);
         fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.urls)) {
+        this.urls = data().deepCopy(fields()[6].schema(), other.urls);
+        fieldSetFlags()[6] = true;
       }
     }
     
@@ -221,25 +245,29 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.text)) {
-        this.text = data().deepCopy(fields()[1].schema(), other.text);
+      if (isValidValue(fields()[1], other.screenname)) {
+        this.screenname = data().deepCopy(fields()[1].schema(), other.screenname);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.retweetCount)) {
-        this.retweetCount = data().deepCopy(fields()[2].schema(), other.retweetCount);
+      if (isValidValue(fields()[2], other.text)) {
+        this.text = data().deepCopy(fields()[2].schema(), other.text);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.favouriteCount)) {
-        this.favouriteCount = data().deepCopy(fields()[3].schema(), other.favouriteCount);
+      if (isValidValue(fields()[3], other.retweetCount)) {
+        this.retweetCount = data().deepCopy(fields()[3].schema(), other.retweetCount);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.hashTags)) {
-        this.hashTags = data().deepCopy(fields()[4].schema(), other.hashTags);
+      if (isValidValue(fields()[4], other.favouriteCount)) {
+        this.favouriteCount = data().deepCopy(fields()[4].schema(), other.favouriteCount);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.urls)) {
-        this.urls = data().deepCopy(fields()[5].schema(), other.urls);
+      if (isValidValue(fields()[5], other.hashTags)) {
+        this.hashTags = data().deepCopy(fields()[5].schema(), other.hashTags);
         fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.urls)) {
+        this.urls = data().deepCopy(fields()[6].schema(), other.urls);
+        fieldSetFlags()[6] = true;
       }
     }
 
@@ -267,6 +295,31 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
       return this;
     }
 
+    /** Gets the value of the 'screenname' field */
+    public java.lang.CharSequence getScreenname() {
+      return screenname;
+    }
+    
+    /** Sets the value of the 'screenname' field */
+    public tarun.learning.org.tweet.core.schema.Tweet.Builder setScreenname(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.screenname = value;
+      fieldSetFlags()[1] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'screenname' field has been set */
+    public boolean hasScreenname() {
+      return fieldSetFlags()[1];
+    }
+    
+    /** Clears the value of the 'screenname' field */
+    public tarun.learning.org.tweet.core.schema.Tweet.Builder clearScreenname() {
+      screenname = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
     /** Gets the value of the 'text' field */
     public java.lang.CharSequence getText() {
       return text;
@@ -274,21 +327,21 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
     
     /** Sets the value of the 'text' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder setText(java.lang.CharSequence value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.text = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this; 
     }
     
     /** Checks whether the 'text' field has been set */
     public boolean hasText() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
     
     /** Clears the value of the 'text' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder clearText() {
       text = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -299,20 +352,20 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
     
     /** Sets the value of the 'retweetCount' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder setRetweetCount(int value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.retweetCount = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this; 
     }
     
     /** Checks whether the 'retweetCount' field has been set */
     public boolean hasRetweetCount() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
     
     /** Clears the value of the 'retweetCount' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder clearRetweetCount() {
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -323,20 +376,20 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
     
     /** Sets the value of the 'favouriteCount' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder setFavouriteCount(int value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.favouriteCount = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this; 
     }
     
     /** Checks whether the 'favouriteCount' field has been set */
     public boolean hasFavouriteCount() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
     
     /** Clears the value of the 'favouriteCount' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder clearFavouriteCount() {
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -347,21 +400,21 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
     
     /** Sets the value of the 'hashTags' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder setHashTags(java.util.List<java.lang.CharSequence> value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.hashTags = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this; 
     }
     
     /** Checks whether the 'hashTags' field has been set */
     public boolean hasHashTags() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
     
     /** Clears the value of the 'hashTags' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder clearHashTags() {
       hashTags = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -372,21 +425,21 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
     
     /** Sets the value of the 'urls' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder setUrls(java.util.List<java.lang.CharSequence> value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.urls = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this; 
     }
     
     /** Checks whether the 'urls' field has been set */
     public boolean hasUrls() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
     
     /** Clears the value of the 'urls' field */
     public tarun.learning.org.tweet.core.schema.Tweet.Builder clearUrls() {
       urls = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -395,11 +448,12 @@ public class Tweet extends org.apache.avro.specific.SpecificRecordBase implement
       try {
         Tweet record = new Tweet();
         record.id = fieldSetFlags()[0] ? this.id : (java.lang.Long) defaultValue(fields()[0]);
-        record.text = fieldSetFlags()[1] ? this.text : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.retweetCount = fieldSetFlags()[2] ? this.retweetCount : (java.lang.Integer) defaultValue(fields()[2]);
-        record.favouriteCount = fieldSetFlags()[3] ? this.favouriteCount : (java.lang.Integer) defaultValue(fields()[3]);
-        record.hashTags = fieldSetFlags()[4] ? this.hashTags : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[4]);
-        record.urls = fieldSetFlags()[5] ? this.urls : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[5]);
+        record.screenname = fieldSetFlags()[1] ? this.screenname : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.text = fieldSetFlags()[2] ? this.text : (java.lang.CharSequence) defaultValue(fields()[2]);
+        record.retweetCount = fieldSetFlags()[3] ? this.retweetCount : (java.lang.Integer) defaultValue(fields()[3]);
+        record.favouriteCount = fieldSetFlags()[4] ? this.favouriteCount : (java.lang.Integer) defaultValue(fields()[4]);
+        record.hashTags = fieldSetFlags()[5] ? this.hashTags : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[5]);
+        record.urls = fieldSetFlags()[6] ? this.urls : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[6]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

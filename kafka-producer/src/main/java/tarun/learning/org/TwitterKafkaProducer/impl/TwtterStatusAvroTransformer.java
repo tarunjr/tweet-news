@@ -13,7 +13,7 @@ public class TwtterStatusAvroTransformer implements Transformer<Status,Tweet> {
 
 	@Override
 	public Tweet transform(Status source) {
-		
+
 		List<CharSequence> hashTags = new ArrayList<CharSequence>();
 		for(HashtagEntity hashTag: source.getHashtagEntities()) {
 			hashTags.add(hashTag.getText());
@@ -22,7 +22,7 @@ public class TwtterStatusAvroTransformer implements Transformer<Status,Tweet> {
 		for(URLEntity url: source.getURLEntities()) {
 			urls.add(url.getURL());
 		}
-		
+
 		Tweet avro = Tweet.newBuilder()
 							.setId(source.getId())
 							.setText(source.getText())
@@ -30,8 +30,9 @@ public class TwtterStatusAvroTransformer implements Transformer<Status,Tweet> {
 							.setFavouriteCount(source.getFavoriteCount())
 							.setHashTags(hashTags)
 							.setUrls(urls)
+							.setScreenname(source.getUser().getScreenName())
 							.build();
-	
+
 		return avro;
 	}
 }
