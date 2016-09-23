@@ -1,4 +1,4 @@
-package org.tarun.learning;
+package org.tarun.learning.tweetnews.trends;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,41 +22,41 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-public class UrlController {
+public class HashTagController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @RequestMapping("/urls")
-    public List<Url> urls() {
+    @RequestMapping("/hashtags")
+    public List<HashTag> hashtags() {
       HashOperations<String,String,String> hashOps = redisTemplate.opsForHash();
-      List<Url> urls = new ArrayList<Url>();
+      List<HashTag> hashTags = new ArrayList<HashTag>();
 
-      String keyPattern = KeyNameSpace.kUrl + ":*";
+      String keyPattern = KeyNameSpace.kHashTag + ":*";
       Set<String> keys = redisTemplate.keys(keyPattern);
 
       for(String key: keys) {
           Map<String, String> entry  =  hashOps.entries(key);
-          Url url = new Url();
-          url.setUrl(entry.get("url"));
-          url.setCount(Long.decode(entry.get("count")));
-          urls.add(url);
+          HashTag ht = new HashTag();
+          ht.setTag(entry.get("hashtag"));
+          ht.setCount(Long.decode(entry.get("count")));
+          hashTags.add(ht);
       }
-      return urls;
+      return hashTags;
     }
-    @RequestMapping("/urls/top/{k}")
-    public List<Url> topUrls(@PathVariable(value="k") long k) {
-      List<Url> urls = new ArrayList<Url>();
+    @RequestMapping("/hashtags/top/{k}")
+    public List<HashTag> topHashtags(@PathVariable(value="k") long k) {
+      List<HashTag> hashTags = new ArrayList<HashTag>();
 
       ZSetOperations<String,String> zSetOps = redisTemplate.opsForZSet();
       Set<ZSetOperations.TypedTuple<String>> entries = zSetOps.reverseRangeWithScores(
-                                  KeyNameSpace.kUrls,0,k);
+                                  KeyNameSpace.kHashTags,0,k);
 
       for(ZSetOperations.TypedTuple<String> entry: entries) {
-          Url url = new Url();
-          url.setUrl(entry.getValue());
-          url.setCount((new Double(entry.getScore())).longValue());
-          urls.add(url);
+          HashTag ht = new HashTag();
+          ht.setTag(entry.getValue());
+          ht.setCount((new Double(entry.getScore())).longValue());
+          hashTags.add(ht);
       }
-      return urls;
+      return hashTags;
     }
 }

@@ -1,4 +1,4 @@
-package org.tarun.learning;
+package org.tarun.learning.tweetnews.trends;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

@@ -1,4 +1,4 @@
-package org.tarun.learning;
+package org.tarun.learning.tweetnews.trends;
 
 public class Url {
   private String url;

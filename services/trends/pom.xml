@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.tarun.learning</groupId>
-    <artifactId>tweet-news</artifactId>
+    <artifactId>trends</artifactId>
     <version>1.0.0</version>
 
     <parent>
