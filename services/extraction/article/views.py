@@ -15,9 +15,11 @@ def extract(request):
     data = {}
     data['title'] = article.title
     data['url'] = url
+
     data['beginning'] = article.text[0:100]
     data['summary'] = article.summary
     data['keywords'] = article.keywords
+
     json_data = json.dumps(data)
 
     return HttpResponse(json_data)
