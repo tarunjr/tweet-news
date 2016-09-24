@@ -1,5 +1,5 @@
 # tweet-news
-A collection of articles mined and organised from twitter feeds.
+A collection of latest trending news articles mined from twitter stream.
 
 Worked completed:
   - Stream Twitter feeds to Kafka
