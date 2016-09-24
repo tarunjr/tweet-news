@@ -2,10 +2,13 @@
 A collection of articles mined and organised from twitter feeds.
 
 Worked completed:
-  - Streaming twitter feeds to Kafka
-  - Stream processing in Storm to find hashtag, url stats and hashtag, url mappings.
-  - Stats updated in Redis
+  - Stream Twitter feeds to Kafka
+  - Stream processing in Storm to find calculate URL ans HashTag Stats.
+  - Stats Serving Service with Redis as datastore.
+  - Article Service with MongoDB as datastore.
+  - Article Information  Extraction Service ( Title, Keywords, Summary )
+ 
 
 Work pending:
-  - Portal to show for Top hastags all the related urls 
-  - Extraction of summary from links ( title, snippet)
+  - Portal to display trending Articles.
+ 
