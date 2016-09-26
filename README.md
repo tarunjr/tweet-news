@@ -40,17 +40,11 @@ In the streaming pipeline data is represented in Avro format.
 
 Following are the runtime services component of the system.
 
-* Trends Service:
+* Trends Service: Manages the trending HashTag, URL entites.Developed as a Micrsservice using Sprint.Boot(Java) and Redis(DB).
 
-Manages the trending HashTag, URL entites.Developed as a Micrsservice using Sprint.Boot(Java) and Redis(DB).
+* Information Extraction Service: Provides the functionality to download, parse and extract information from the news article. Developed in Django (Python) and uses Newspaper library hosted @ https://github.com/codelucas/newspaper for actual information extraction.
 
-* Information Extraction Service:
-
-Provides the functionality to download, parse and extract information from the news article. Developed in Django (Python) and used Newspaper library hosted @ https://github.com/codelucas/newspaper for actual information extraction.
-
-* Articles Service:
-
-Provides the capability to cache and serve extracted article information. Uses the Extraction Service to do the actual inforamtion retrieval. Developed in Node.JS and uses MongoDB to cache extracted article summary for fast access.
+* Articles Service: Provides the capability to cache and serve extracted article information. Uses the Extraction Service to do the actual inforamtion retrieval. Developed in Node.JS and uses MongoDB to cache extracted article summary for fast access.
 
 #### Analytics Design:
 
