@@ -40,15 +40,15 @@ In the streaming pipeline data is represented in Avro format.
 
 Following are the runtime services component of the system.
 
-##### Trends Service:
+* Trends Service:
 
 Manages the trending HashTag, URL entites.Developed as a Micrsservice using Sprint.Boot(Java) and Redis(DB).
 
-##### Information Extraction Service:
+* Information Extraction Service:
 
 Provides the functionality to download, parse and extract information from the news article. Developed in Django (Python) and used Newspaper library hosted @ https://github.com/codelucas/newspaper for actual information extraction.
 
-##### Articles Service:
+* Articles Service:
 
 Provides the capability to cache and serve extracted article information. Uses the Extraction Service to do the actual inforamtion retrieval. Developed in Node.JS and uses MongoDB to cache extracted article summary for fast access.
 
@@ -56,11 +56,11 @@ Provides the capability to cache and serve extracted article information. Uses t
 
 Following are the analytics components. Apache Storm used as the stream processing framework, Kafka as data ingestion and Redis as the serving DB. Twitter4J streaming is used as the source of Tweets.
 
-##### Window based aggregation of HashTag counts:
+* Window based aggregation of HashTag counts:
 
 A simple Storm topplogy to perform tick based time window aggreation of HashTag's parsed out of twitter feed coming from Kafka topic.
 
-##### Window based aggregation of URL counts:
+* Window based aggregation of URL counts:
 
 A simple Storm topplogy to perform tick based time window aggreation of URL's parsed out of twitter feed coming from Kafka topic.
 
