@@ -44,7 +44,7 @@ Manages the trending HashTag, URL entites.Developed as a Micrsservice using Spri
 
 ##### Information Extraction Service:
 
-Provides the functionality to download, parse and extract information from the news article. Developed in Django (Python) and used Newspaper library hosted @ https://github.com/codelucas/newspaper
+Provides the functionality to download, parse and extract information from the news article. Developed in Django (Python) and used Newspaper library hosted @ https://github.com/codelucas/newspaper for actual information extraction.
 
 ##### Articles Service:
 
