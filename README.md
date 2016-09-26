@@ -50,21 +50,15 @@ Following are the runtime services component of the system.
 
 Following are the analytics components. Apache Storm used as the stream processing framework, Kafka as data ingestion and Redis as the serving DB. Twitter4J streaming is used as the source of Tweets.
 
-* Window based aggregation of HashTag counts:
+* Window based aggregation of HashTag counts: A simple Storm topplogy to perform tick based time window aggreation of HashTag's parsed out of twitter feed coming from Kafka topic.
 
-A simple Storm topplogy to perform tick based time window aggreation of HashTag's parsed out of twitter feed coming from Kafka topic.
-
-* Window based aggregation of URL counts:
-
-A simple Storm topplogy to perform tick based time window aggreation of URL's parsed out of twitter feed coming from Kafka topic.
+* Window based aggregation of URL counts: A simple Storm topplogy to perform tick based time window aggreation of URL's parsed out of twitter feed coming from Kafka topic.
 
 #### Application Design (In Development):
 
 Application components are implemented a native android applications interacting with only the services component.
 
-* Article Cards:
-
-User interface for consumer to discover trending article and get summary view for quick reading.
+* Article Cards: User interface for consumer to discover trending article and get summary view for quick reading.
 
 
  
