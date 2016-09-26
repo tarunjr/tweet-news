@@ -16,29 +16,29 @@ and presented in an easy card like interface to get the summary of the article c
 
 ### System Architecture
 
-Overview
+* Overview
 
 System is designed as near realtime stream processing pipeline using Twitter4J, Kafka and Apache Storm. Redis provides the serving DB. Microservices developed in Spring.Boot and Node.JS provide minimalist API for the application to present 
 
-#### System Architecture Diagram
+#### System Architecture Diagram:
 
-#### Data Design
+#### Data Design:
 
 Following domain entities will be modelled in the system.
 
-##### Tweet : A tweet from Twitter system.
-##### HashTag: A token using in Tweet to classify/represent topic for aggregation.
-##### URL: A HTTP URL for a web resource.
-##### Article: A web page containing a story published by news agency.
-##### Card: UX for displaying news article summary for user.
+* Tweet : A tweet from Twitter system.
+* HashTag: A token using in Tweet to classify/represent topic for aggregation.
+* URL: A HTTP URL for a web resource.
+* Article: A web page containing a story published by news agency.
+* Card: UX for displaying news article summary for user.
 
 In the streaming pipeline data is represented in Avro format.
 
-#### Services Design
+#### Services Design:
 
 Following are the runtime services component of the system.
 
-##### Trends Service
+##### Trends Service:
 
 Manages the trending HashTag, URL entites.Developed as a Micrsservice using Sprint.Boot(Java) and Redis(DB).
 
