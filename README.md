@@ -1,6 +1,6 @@
 # Tweet-News: 
 
-## Trending news articles aggregated and summarized from Twitter feed.
+## Trending news articles discovered from Twitter and summarized for easy reading.
 
 ### Vision:
 
