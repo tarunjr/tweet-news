@@ -1,28 +1,28 @@
-Tweet-News: Trending news articles aggregated and summarized from Twitter feed.
+# Tweet-News: Trending news articles aggregated and summarized from Twitter feed.
 
-Vision:
+### Vision:
 
 Provide and easy way to discover and read popular news articles on the go.
 
-Problem:
+### Problem:
 
 Given the busy nature of work and life, sometimes it is difficult to find time to read about that is happening
 around the world. There is a need for simple interface to get the summary of important news articles to read anywhere
 anytime.
 
-Solution:
+### Solution:
 Tweet-News is a simple interface application which provides a list of top news articles mined out of twitter feeds
 and presented in an easy card like interface to get the summary of the article content.
 
-System Architecture
+### System Architecture
 
 Overview
 
 System is designed as near realtime stream processing pipeline using Twitter4J, Kafka and Apache Storm. Redis provides the serving DB. Microservices developed in Spring.Boot and Node.JS provide minimalist API for the application to present 
 
-System Architecture Diagram
+#### System Architecture Diagram
 
-Data Design
+#### Data Design
 
 Following domain entities will be modelled in the system.
 
@@ -34,7 +34,7 @@ Card: UX for displaying news article summary for user.
 
 In the streaming pipeline data is represented in Avro format.
 
-Services Design
+#### Services Design
 
 Following are the runtime services component of the system.
 
@@ -50,7 +50,7 @@ Provides the functionality to download, parse and extract information from the n
 
 Provides the capability to cache and serve extracted article information. Uses the Extraction Service to do the actual inforamtion retrieval. Developed in Node.JS and uses MongoDB to cache extracted article summary for fast access.
 
-Analytics Design:
+#### Analytics Design:
 
 Following are the analytics components. Apache Storm used as the stream processing framework, Kafka as data ingestion and Redis as the serving DB. Twitter4J streaming is used as the source of Tweets.
 
@@ -62,7 +62,7 @@ A simple Storm topplogy to perform tick based time window aggreation of HashTag'
 
 A simple Storm topplogy to perform tick based time window aggreation of URL's parsed out of twitter feed coming from Kafka topic.
 
-Application Design (In Development):
+#### Application Design (In Development):
 
 Application components are implemented a native android applications interacting with only the services component.
 
