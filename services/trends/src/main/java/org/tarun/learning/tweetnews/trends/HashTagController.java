@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -21,10 +22,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@CrossOrigin
 @RestController
 public class HashTagController {
     @Autowired
     private StringRedisTemplate redisTemplate;
+
 
     @RequestMapping("/hashtags")
     public List<HashTag> hashtags() {
@@ -43,6 +46,7 @@ public class HashTagController {
       }
       return hashTags;
     }
+
     @RequestMapping("/hashtags/top/{k}")
     public List<HashTag> topHashtags(@PathVariable(value="k") long k) {
       List<HashTag> hashTags = new ArrayList<HashTag>();
