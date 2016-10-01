@@ -8,6 +8,7 @@ module.exports = function() {
 	api.use(bodyparser.json());
 
 	api.post('/articles/', artcile.post);
+  api.get('/articles/', artcile.get);
 
   return api;
 }
