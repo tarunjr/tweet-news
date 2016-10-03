@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,9 +43,18 @@ public class HashTagController {
           HashTag ht = new HashTag();
           ht.setTag(entry.get("hashtag"));
           ht.setCount(Long.decode(entry.get("count")));
+          ht.setUrls(getUrls(entry.get("hashtag")));
           hashTags.add(ht);
       }
       return hashTags;
+    }
+    private Set<String> getUrls(String hashtag) {
+      SetOperations<String,String> setOps = redisTemplate.opsForSet();
+
+      String key = KeyNameSpace.kHashTagUrls + ":" + hashtag;
+      System.out.println(key);
+      Set<String> urls = setOps.members(key);
+      return urls;
     }
 
     @RequestMapping("/hashtags/top/{k}")
@@ -59,6 +69,7 @@ public class HashTagController {
           HashTag ht = new HashTag();
           ht.setTag(entry.getValue());
           ht.setCount((new Double(entry.getScore())).longValue());
+          ht.setUrls(getUrls(entry.getValue()));
           hashTags.add(ht);
       }
       return hashTags;

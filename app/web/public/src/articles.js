@@ -1,7 +1,4 @@
 var Article = React.createClass({
-
-
-
   render: function() {
     return (
       <div><h3><a href={this.props.data.url}>{this.props.data.title}</a></h3>
@@ -42,7 +39,7 @@ var Articles = React.createClass({
       console.log(xhr.responseText);
       var result = JSON.parse(xhr.responseText);
       this.setState({
-              articles : result
+        articles : result
       });
     }.bind(this);
     xhr.onerror = function() {
