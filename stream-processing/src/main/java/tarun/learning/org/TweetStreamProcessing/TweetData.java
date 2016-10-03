@@ -43,5 +43,4 @@ public class TweetData implements Serializable {
 	public List<String> getUrls(){
 		return urls;
 	}
-
 }

@@ -5,7 +5,7 @@ var http = require('http');
 
 exports.post = function(req, res) {
 
-var urls = req.body;
+var urls = req.body.urls;
 console.log(urls);
 var Article = mongoose.model('Article');
 
@@ -20,7 +20,16 @@ async.waterfall([
 					 	else {
 						 		// find the url
 								var cachedUrls = [];
+								var results = [];
 								cachedArticles.forEach(function (article, index, array) {
+										var newArticle = {}
+										newArticle.id = article.url;
+										newArticle.url = article.url;
+										newArticle.title = article.title;
+										newArticle.summary = article.summary;
+										newArticle.beginning = article.beginning;
+										newArticle.keywords = article.keywords;
+										results.push(newArticle);
 										cachedUrls.push(article.url);
 								});
 								console.log(cachedUrls);
@@ -30,7 +39,7 @@ async.waterfall([
 										if (false == cachedUrls.includes(url))
 												fetchUrls.push(url);
 								});
-								callback(null, fetchUrls, cachedArticles);
+								callback(null, fetchUrls, results);
 						}
 				});
 	  },
@@ -90,7 +99,9 @@ async.waterfall([
 	  console.log('all done');
 		var articles = cachedArticles.concat(fetchedArticles);
 	  console.log(articles);
-		res.send(JSON.stringify(articles));
+		var response = {};
+		response['articles'] = articles;
+		res.send(JSON.stringify(response));
 	});
 }
 exports.get = function(req, res) {

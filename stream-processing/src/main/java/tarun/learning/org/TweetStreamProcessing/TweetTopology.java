@@ -1,7 +1,5 @@
 package tarun.learning.org.TweetStreamProcessing;
 
-
-
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.StormSubmitter;
@@ -20,36 +18,48 @@ import tarun.learning.org.TweetStreamProcessing.bolt.CountTokenizerBolt;
 import tarun.learning.org.TweetStreamProcessing.bolt.HashTagURLMapSinkBolt;
 import tarun.learning.org.TweetStreamProcessing.bolt.HashTagURLMapperBolt;
 import tarun.learning.org.TweetStreamProcessing.bolt.RollingCountBolt;
+import tarun.learning.org.TweetStreamProcessing.bolt.HashTagTopTweetMapperBolt;
+import tarun.learning.org.TweetStreamProcessing.bolt.HashTagTopTweetMapSinkBolt;
 import tarun.learning.org.tweet.core.Constants;
 
 public class TweetTopology {
 	private static final String TWEET_SPOUT = "kafkaTweetSpout";
 
-	
+
 	public static void main(String[] args) throws Exception
 	{
 		  TopologyBuilder builder = new TopologyBuilder();
 		  builder.setSpout(TWEET_SPOUT, getKafkaSpout(Constants.KAFKA_TWEET_TOPIC), 1);
-		  
+
 		  builder.setBolt(AvroDecoderBolt.BOLT_NAME, new AvroDecoderBolt(), 3)
 		  		.shuffleGrouping(TWEET_SPOUT);
-		  
+
+			// 1: Count(Hashtag), Count(Url)
 		  builder.setBolt(CountTokenizerBolt.BOLT_NAME, new CountTokenizerBolt(), 3)
 		  		.shuffleGrouping(AvroDecoderBolt.BOLT_NAME);
-		  
+
 		  builder.setBolt(RollingCountBolt.BOLT_NAME, new RollingCountBolt(), 3)
 		  		.fieldsGrouping(CountTokenizerBolt.BOLT_NAME, new Fields(CountTokenizerBolt.FIELD_TYPE,CountTokenizerBolt.FIELD_VALUE));
-		  
+
 		  builder.setBolt(CountReportSinkBolt.BOLT_NAME, new CountReportSinkBolt(), 1)
 		  		.globalGrouping(RollingCountBolt.BOLT_NAME);
-		  
-		  
+
+
+			// 2:  Map[HashTag] =[URLs]
 		  builder.setBolt(HashTagURLMapperBolt.BOLT_NAME, new HashTagURLMapperBolt(), 5)
 	  			.shuffleGrouping(AvroDecoderBolt.BOLT_NAME);
-	  
+
 		  builder.setBolt(HashTagURLMapSinkBolt.BOLT_NAME, new HashTagURLMapSinkBolt(), 1)
 	  			.globalGrouping(HashTagURLMapperBolt.BOLT_NAME);
-	  
+
+
+			// 3:  Map[HashTag] =Top([Tweets])
+			builder.setBolt(HashTagTopTweetMapperBolt.BOLT_NAME, new HashTagTopTweetMapperBolt(), 5)
+			  			.shuffleGrouping(AvroDecoderBolt.BOLT_NAME);
+
+			builder.setBolt(HashTagTopTweetMapSinkBolt.BOLT_NAME, new HashTagTopTweetMapSinkBolt(), 1)
+			  			.globalGrouping(HashTagTopTweetMapperBolt.BOLT_NAME);
+
 		  // create the default config object
 		  Config conf = new Config();
 		  conf.registerSerialization(TweetData.class);
@@ -89,7 +99,7 @@ public class TweetTopology {
 		      cluster.shutdown();
 		    }
 	 }
-	
+
 	 private static KafkaSpout getKafkaSpout(String topicName) {
 		  ZkHosts hosts = new ZkHosts("127.0.0.1:2181");
 		  SpoutConfig spoutConfig = new SpoutConfig(hosts, topicName, "/" + topicName, "TweetTopologyKafkaSpout");

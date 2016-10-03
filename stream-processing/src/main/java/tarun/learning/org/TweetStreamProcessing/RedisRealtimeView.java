@@ -2,7 +2,7 @@ package tarun.learning.org.TweetStreamProcessing;
 
 import java.util.List;
 import java.util.Map;
-
+import java.lang.StringBuilder;
 
 import redis.clients.jedis.Jedis;
 
@@ -25,10 +25,23 @@ public class RedisRealtimeView  implements RealtimeView{
 		jedis.hmset(key, statsMap);
 		jedis.zadd("urls", Long.decode(statsMap.get("count")), statsMap.get("url"));
 	}
+
 	public void updateHashtagUrlMapping(String hashTag, List<String> urls) {
 		String key = "hu:" + hashTag;
 		for (String url: urls)
 			jedis.sadd(key, url);
+	}
+	public void updateHashtagPopularTweet(String hashTag, Map<String, String> tweetInfo){
+			String key = "ht:" + hashTag;
+			StringBuilder sb = new StringBuilder();
+			sb.append("{");
+						sb.append("\"id\":"); sb.append(tweetInfo.get("id"));
+						sb.append(", \"text\":"); sb.append("\""); sb.append(tweetInfo.get("text"));sb.append("\"");
+						sb.append(", \"hashtag\":"); sb.append("\"");sb.append(tweetInfo.get("hashtag"));sb.append("\"");
+						sb.append(", \"screenname\":"); sb.append("\"");sb.append(tweetInfo.get("screenname"));sb.append("\"");
+						sb.append(", \"popularitycount\":"); sb.append(tweetInfo.get("popularitycount"));
+			sb.append("}");
+		  jedis.zadd(key, Long.decode(tweetInfo.get("popularitycount")), sb.toString());
 	}
 	public void close() {
 		jedis.close();
