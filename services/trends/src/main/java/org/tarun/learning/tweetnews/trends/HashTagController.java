@@ -64,7 +64,13 @@ public class HashTagController {
           HashTag ht = new HashTag();
           ht.setTag(entry.getValue());
           ht.setCount((new Double(entry.getScore())).longValue());
-          ht.setUrls( getNItems(getUrls(getUrls(entry.getValue())),5 ));
+          ht.setUrls(
+              getNItems(
+                getUrls(
+                  entry.getValue()
+                )
+              ,5)
+          );
           ht.setTopTweets(getTopTweets(entry.getValue()));
           ht.setArticles(getArticles(ht.getUrls()));
           hashTags.add(ht);

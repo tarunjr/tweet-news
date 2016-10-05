@@ -1,0 +1,14 @@
+1. Installing zookeeper
+sudo apt-get install zookeeperd
+telnet localhost 2181
+enter ruok
+
+
+2. Installing Kafka
+wget "http://mirror.cc.columbia.edu/pub/software/apache/kafka/0.8.2.1/kafka_2.11-0.8.2.1.tgz" -O ~/Downloads/kafka.tgz
+mkdir -p ~/kafka && cd ~/kafka
+tar -xvzf ~/Downloads/kafka.tgz --strip 1
+vi ~/kafka/config/server.properties
+delete.topic.enable = true
+Adjust heap options in the startup scripts
+nohup ~/kafka/bin/kafka-server-start.sh ~/kafka/config/server.properties
