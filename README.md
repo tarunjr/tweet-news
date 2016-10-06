@@ -1,7 +1,8 @@
-# Tweet-News: 
+# Tweet-News:
 
 ## Trending news articles discovered from Twitter and summarized for easy reading.
 
+![Try it alpha release](http://simplenews.com.s3-website.ap-south-1.amazonaws.com/)
 ### Vision:
 
 Provide and easy way to discover and read popular news articles on the go.
@@ -20,7 +21,7 @@ and presented in an easy card like interface to get the summary of the article c
 
 * Overview
 
-System is designed as near realtime stream processing pipeline using Twitter4J, Kafka and Apache Storm. Redis provides the serving DB. Microservices developed in Spring.Boot and Node.JS provide minimalist API for the application to present 
+System is designed as near realtime stream processing pipeline using Twitter4J, Kafka and Apache Storm. Redis provides the serving DB. Microservices developed in Spring.Boot and Node.JS provide minimalist API for the application to present
 
 
 ![System Architecture Diagram](https://github.com/tarunjr/tweet-news/blob/master/docs/Tweet-News-Architecture.jpg)
@@ -60,6 +61,3 @@ Following are the analytics components. Apache Storm used as the stream processi
 Application components are implemented a native android applications interacting with only the services component.
 
 * Article Cards: User interface for consumer to discover trending article and get summary view for quick reading.
-
-
- 
