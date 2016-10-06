@@ -2,7 +2,7 @@
 
 ## Trending news articles discovered from Twitter and summarized for easy reading.
 
-![Try it alpha release](http://simplenews.com.s3-website.ap-south-1.amazonaws.com/)
+[Alpha release. Try it now!](http://simplenews.com.s3-website.ap-south-1.amazonaws.com/)
 ### Vision:
 
 Provide and easy way to discover and read popular news articles on the go.
@@ -28,7 +28,7 @@ System is designed as near realtime stream processing pipeline using Twitter4J, 
 
 #### Data Design:
 
-Following domain entities will be modelled in the system.
+Following domain entities will be modeled in the system.
 
 * Tweet : A tweet from Twitter system.
 * HashTag: A token using in Tweet to classify/represent topic for aggregation.
@@ -42,7 +42,7 @@ In the streaming pipeline data is represented in Avro format.
 
 Following are the runtime services component of the system.
 
-* Trends Service: Manages the trending HashTag, URL entites.Developed as a Micrsservice using Sprint.Boot(Java) and Redis(DB).
+* Trends Service: Manages the trending HashTag, URL and Article entity. Developed as a Microservice  using Sprint.Boot(Java) and Redis(DB).
 
 * Information Extraction Service: Provides the functionality to download, parse and extract information from the news article. Developed in Django (Python) and uses Newspaper library hosted @ https://github.com/codelucas/newspaper for actual information extraction.
 
@@ -58,6 +58,6 @@ Following are the analytics components. Apache Storm used as the stream processi
 
 #### Application Design (In Development):
 
-Application components are implemented a native android applications interacting with only the services component.
+Application components are implemented a ReactJS web application interacting with only the services component.
 
 * Article Cards: User interface for consumer to discover trending article and get summary view for quick reading.
