@@ -1,7 +1,8 @@
-package org.tarun.learning.tweetnews.trends;
+package org.tarun.learning.tweetnews.trends.model;
 
-import org.tarun.learning.tweetnews.trends.Tweet;
-import org.tarun.learning.tweetnews.trends.Article;
+import org.tarun.learning.tweetnews.trends.model.Tweet;
+import org.tarun.learning.tweetnews.trends.model.Article;
+
 import java.util.Set;
 import java.util.List;
 

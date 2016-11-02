@@ -1,4 +1,4 @@
-package org.tarun.learning.tweetnews.trends;
+package org.tarun.learning.tweetnews.trends.model;
 
 import java.util.List;
 

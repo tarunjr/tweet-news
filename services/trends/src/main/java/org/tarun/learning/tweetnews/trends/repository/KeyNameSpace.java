@@ -1,4 +1,4 @@
-package org.tarun.learning.tweetnews.trends;
+package org.tarun.learning.tweetnews.trends.repository;
 
 public class KeyNameSpace {
   public static final String kHashTag = "hashtag";
