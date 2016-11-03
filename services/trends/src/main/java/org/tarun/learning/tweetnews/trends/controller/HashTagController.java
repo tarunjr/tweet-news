@@ -37,7 +37,7 @@ public class HashTagController {
     @Autowired
     private ArticleService articleService;
 
-    @RequestMapping("/")
+    @RequestMapping("")
     public List<HashTag> hashtags() {
         return hashTagService.getAll();
     }
