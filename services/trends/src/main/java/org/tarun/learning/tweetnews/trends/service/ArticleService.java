@@ -18,11 +18,9 @@ import org.tarun.learning.tweetnews.trends.repository.ArticleRepository;
 
 public class ArticleService {
 
-    @Value("${service.article.url:127.0.0.1}")
-    private String articleServiceUrl;
+    @Value("${service.article.url:127.0.0.1:8081}")
+    private String articleServiceEndpoint;
 
-    @Value("${service.article.port:8081}")
-    private String articleServicePort;
 
     private final ArticleRepository repository;
 
@@ -39,20 +37,20 @@ public class ArticleService {
         }
 
         CompletableFuture<Article> future = new CompletableFuture<Article>();
-            getArticleAsync(buildEndpoint(), url).thenAccept(article -> {
-                repository.save(article);
+            getArticleAsync(getArticleServiceUri(), url).thenAccept(article -> {
+                repository.save(url, article);
                 future.complete(article);
             });
 
         return future;
     }
-    private String buildEndpoint() {
-        return null;
+    private String getArticleServiceUri() {
+        return String.format("http://{0}/api/v1/article", articleServiceEndpoint);
     }
-    private CompletableFuture<Article> getArticleAsync(String endpoint, String articleUrl) {
+    private CompletableFuture<Article> getArticleAsync(String uri, String articleUrl) {
         Article article = null;
         RestTemplate restTemplate = new RestTemplate();
-        String json = restTemplate.postForObject("http://localhost:8081/api/v1/articles/", articleUrl, String.class);
+        String json = restTemplate.postForObject(uri, articleUrl, String.class);
         System.out.println(json);
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -62,5 +60,4 @@ public class ArticleService {
         }
         return CompletableFuture.completedFuture(article);
     }
-
 }

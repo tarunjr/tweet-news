@@ -7,4 +7,5 @@ public class KeyNameSpace {
   public static final String kUrls = "urls";
   public static final String kHashTagUrls = "hu";
   public static final String kHashTagTweets = "ht";
+  public static final String kHashTagArticle = "article";
 }
