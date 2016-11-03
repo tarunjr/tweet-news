@@ -10,12 +10,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
 import org.tarun.learning.tweetnews.trends.model.Article;
 
 import org.springframework.web.client.RestTemplate;
 import org.tarun.learning.tweetnews.trends.repository.ArticleRepository;
 
+@Service
 public class ArticleService {
 
     @Value("${service.article.url:127.0.0.1:8000}")
