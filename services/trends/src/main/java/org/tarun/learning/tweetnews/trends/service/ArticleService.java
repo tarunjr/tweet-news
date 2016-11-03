@@ -47,12 +47,13 @@ public class ArticleService {
         return future;
     }
     private String getArticleServiceUri() {
-        return String.format("http://%s/api/v1/article", articleServiceEndpoint);
+        return String.format("http://%s/article/extract", articleServiceEndpoint);
     }
     private CompletableFuture<Article> getArticleAsync(String uri, String articleUrl) {
         Article article = null;
         RestTemplate restTemplate = new RestTemplate();
-        String json = restTemplate.postForObject(uri, articleUrl, String.class);
+        String fullUri = String.format("%s?url=%s", uri, articleUrl);
+        String json = restTemplate.getForObject(fullUri, String.class);
         System.out.println(json);
         ObjectMapper mapper = new ObjectMapper();
         try {
