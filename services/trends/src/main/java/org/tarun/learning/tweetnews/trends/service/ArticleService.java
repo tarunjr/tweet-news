@@ -47,7 +47,7 @@ public class ArticleService {
         return future;
     }
     private String getArticleServiceUri() {
-        return String.format("http://{0}/api/v1/article", articleServiceEndpoint);
+        return String.format("http://%s/api/v1/article", articleServiceEndpoint);
     }
     private CompletableFuture<Article> getArticleAsync(String uri, String articleUrl) {
         Article article = null;

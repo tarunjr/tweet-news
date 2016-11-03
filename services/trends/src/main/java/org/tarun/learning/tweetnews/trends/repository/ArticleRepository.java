@@ -27,7 +27,7 @@ public class ArticleRepository {
         Article article  = null;
         ValueOperations<String,String> ops = redisTemplate.opsForValue();
 
-        String key = String.format("{0}:{1}",KeyNameSpace.kHashTagArticle, url);
+        String key = String.format("%s:%s",KeyNameSpace.kHashTagArticle, url);
         if (redisTemplate.hasKey(key)) {
             String articleJson = ops.get(key);
             ObjectMapper mapper = new ObjectMapper();
@@ -46,7 +46,7 @@ public class ArticleRepository {
 
       try {
         String articleJson = mapper.writeValueAsString(article);
-        String key = String.format("{0}:{1}",KeyNameSpace.kHashTagArticle, url);
+        String key = String.format("%s:%s",KeyNameSpace.kHashTagArticle, url);
         ops.set(key, articleJson);
       } catch (Exception ex) {
         ex.printStackTrace();
