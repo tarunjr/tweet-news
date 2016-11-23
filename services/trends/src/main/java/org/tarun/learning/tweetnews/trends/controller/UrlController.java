@@ -13,6 +13,7 @@ import org.tarun.learning.tweetnews.trends.service.UrlService;
 
 import java.util.List;
 
+@RestController
 @CrossOrigin
 @RequestMapping("/api/v1/urls")
 public class UrlController {
