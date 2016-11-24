@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/hashtags")
+@RequestMapping("/trends/api/v1/hashtags")
 public class HashTagController {
 
     @Autowired

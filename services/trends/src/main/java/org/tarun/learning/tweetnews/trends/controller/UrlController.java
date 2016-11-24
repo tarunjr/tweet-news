@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/urls")
+@RequestMapping("/trends/api/v1/urls")
 public class UrlController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class UrlController {
     public UrlController(UrlService service) {
         this.urlService = service;
     }
-    @RequestMapping("/")
+    @RequestMapping("")
     public List<Url> urls() {
         return urlService.getAll();
     }

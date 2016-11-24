@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @CrossOrigin
 public class HealthCheckController {
-    @RequestMapping("/health")
+    @RequestMapping("/trends/api/v1/healthcheck")
     public String health() {
         return "OK";
     }
