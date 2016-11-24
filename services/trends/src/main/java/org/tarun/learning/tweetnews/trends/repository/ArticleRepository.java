@@ -22,7 +22,7 @@ import java.util.Set;
 public class ArticleRepository {
     @Autowired
     private StringRedisTemplate redisTemplate;
-
+      
     public Article get(String url) {
         Article article  = null;
         ValueOperations<String,String> ops = redisTemplate.opsForValue();
