@@ -3,6 +3,8 @@ package tarun.learning.org.TweetStreamProcessing;
 import java.util.List;
 import java.util.Map;
 import java.lang.StringBuilder;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import com.google.common.io.Resources;
