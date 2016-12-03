@@ -28,12 +28,10 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/trends/api/v1/hashtags")
+@RequestMapping("/trends/api/v1/topics")
 public class HashTagController {
-
     @Autowired
     private HashTagService hashTagService;
-
     @Autowired
     private ArticleService articleService;
 
@@ -42,25 +40,47 @@ public class HashTagController {
         return hashTagService.getAll();
     }
 
-    @RequestMapping("/top/{k}")
-    public List<HashTag> topHashtags(@PathVariable(value="k") int k) {
-
-        List<HashTag> hashTags = hashTagService.getTop(k);
+    @RequestMapping("/expanded")
+    public List<HashTag> topHashtags(@RequestParam(value="limit", defaultValue="5") Integer limit,
+                                     @RequestParam(value="articleformat", defaultValue="link") String articleformat) {
+        limit = Math.min(10, limit);
+        List<HashTag> hashTags = hashTagService.getTop(limit);
 
         for(HashTag hashtag: hashTags) {
-
-            List<CompletableFuture<Article>> futures =
-                    hashtag.getUrls().stream()
-                            .map(url -> articleService.getAsync(url))
-                            .collect(Collectors.toList());
-
-            List<Article> articles = futures.stream()
-                    .map(CompletableFuture::join)
-                    .collect(Collectors.toList());
-
-            hashtag.setArticles(articles);
+            if(articleformat.equals("expanded")) {
+                List<Article> articles = getArticlesExpanded(hashtag);
+                hashtag.setArticles(articles);
+            } else {
+                List<String> urls = getArticleUrl(hashtag);
+                hashtag.setArticleUrls(urls);
+            }
         }
         return hashTags;
     }
+    private List<String> getArticleUrl(HashTag hashtag) {
 
+      List<CompletableFuture<String>> futures =
+              hashtag.getUrls().stream()
+                      .map(url -> articleService.getUrlAsync(url))
+                      .collect(Collectors.toList());
+
+      List<String> urls = futures.stream()
+              .map(CompletableFuture::join)
+              .collect(Collectors.toList());
+
+      return urls;
+    }
+    private List<Article> getArticlesExpanded(HashTag hashtag) {
+
+      List<CompletableFuture<Article>> futures =
+                hashtag.getUrls().stream()
+                      .map(url -> articleService.getExapndedAsync(url))
+                      .collect(Collectors.toList());
+
+      List<Article> articles = futures.stream()
+              .map(CompletableFuture::join)
+              .collect(Collectors.toList());
+
+      return articles;
+    }
 }

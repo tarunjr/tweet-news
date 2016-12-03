@@ -23,27 +23,66 @@ public class ArticleService {
     @Value("${service.article.url:127.0.0.1:8000}")
     private String articleServiceEndpoint;
 
-
     private final ArticleRepository repository;
+    private final CachingService cachingService;
 
     @Autowired
-    public ArticleService(ArticleRepository repository) {
+    public ArticleService(CachingService cachingService,
+                          ArticleRepository repository) {
         this.repository = repository;
+        this.cachingService = cachingService;
     }
     @Async
-    public CompletableFuture<Article> getAsync(String url){
+    public CompletableFuture<String> getUrlAsync(String url){
+        String key = "art:url:" + url;
+        String articleUrl = cachingService.get(key);
+        if (articleUrl != null) {
+            return CompletableFuture.completedFuture(articleUrl);
+        }
+        articleUrl= repository.getUrl(url);
+        if (articleUrl != null) {
+            return CompletableFuture.completedFuture(articleUrl);
+        }
 
-        Article cachedSArticle = repository.get(url);
-        if (cachedSArticle != null) {
-            return CompletableFuture.completedFuture(cachedSArticle);
+        CompletableFuture<String> future = new CompletableFuture<String>();
+            getArticleAsync(getArticleServiceUri(), url).thenAccept(article -> {
+                repository.save(url, article);
+                String u = repository.getUrl(url);
+                cachingService.set(key, u);
+                future.complete(u);
+            });
+        return future;
+    }
+    @Async
+    public CompletableFuture<Article> getExapndedAsync(String url){
+        Article article = null;
+        String key = "art:url:" + url;
+        String articleJson = cachingService.get(key);
+        if (articleJson != null) {
+          try {
+            ObjectMapper mapper = new ObjectMapper();
+            article = mapper.readValue(articleJson, Article.class);
+            return CompletableFuture.completedFuture(article);
+          } catch(Exception ex) {
+              ex.printStackTrace();
+          }
+        }
+        article = repository.getExpanded(url);
+        if (article != null) {
+            return CompletableFuture.completedFuture(article);
         }
 
         CompletableFuture<Article> future = new CompletableFuture<Article>();
-            getArticleAsync(getArticleServiceUri(), url).thenAccept(article -> {
-                repository.save(url, article);
-                future.complete(article);
+            getArticleAsync(getArticleServiceUri(), url).thenAccept(articleNew -> {
+                repository.save(url, articleNew);
+                try {
+                  ObjectMapper mapper = new ObjectMapper();
+                  String js = mapper.writeValueAsString(articleNew);
+                  cachingService.set(key, js);
+                } catch(Exception ex) {
+                }
+                future.complete(articleNew);
             });
-
         return future;
     }
     private String getArticleServiceUri() {

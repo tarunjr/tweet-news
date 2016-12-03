@@ -1,9 +1,14 @@
 package org.tarun.learning.tweetnews.trends.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.beans.factory.annotation.Value;
+
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,43 +19,98 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.net.URL;
 
 /**
  * Created by tarunrathor on 01/11/16.
  */
 @Repository
 public class ArticleRepository {
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-      
-    public Article get(String url) {
-        Article article  = null;
-        ValueOperations<String,String> ops = redisTemplate.opsForValue();
+    private AmazonS3 s3Client = null;
 
-        String key = String.format("%s:%s",KeyNameSpace.kHashTagArticle, url);
-        if (redisTemplate.hasKey(key)) {
-            String articleJson = ops.get(key);
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-              article = mapper.readValue(articleJson, Article.class);
-            } catch (Exception ex) {
-              article = null;
-              ex.printStackTrace();
-            }
+    @Value("${service.article.s3.bucketname}")
+    private String bucketName;
+    @Value("${service.article.s3.region}")
+    private String region;
+
+    public  ArticleRepository() {
+        try {
+          s3Client = AmazonS3ClientBuilder.standard()
+                .withRegion(Regions.US_EAST_1)
+                .build();
+        } catch (Exception ex) {
+            s3Client = null;
+        }
+    }
+
+    public String getUrl(String url) {
+        if (s3Client == null)
+          return null;
+
+        String objectKey = getS3ObjectKey("hashtag",url);
+        try {
+          URL articleUrl = null;
+          articleUrl = s3Client.getUrl(bucketName, objectKey);
+          return articleUrl.toString();
+        } catch (Exception ex) {
+          ex.printStackTrace();
+        }
+        return "";
+    }
+    public Article getExpanded(String url) {
+        if (s3Client == null)
+          return null;
+
+        Article article=null;
+        String objectKey = getS3ObjectKey("hashtag",url);
+
+        try {
+          String articleJson =  s3Client.getObjectAsString(bucketName, objectKey);
+          ObjectMapper mapper = new ObjectMapper();
+          article = mapper.readValue(articleJson, Article.class);
+        } catch(Exception ex) {
+            article = null;
+            ex.printStackTrace();
         }
         return article;
     }
-    public void save(String url, Article  article) {
-      ValueOperations<String,String> ops = redisTemplate.opsForValue();
-      ObjectMapper mapper = new ObjectMapper();
+    public String save(String url, Article  article) {
+      if (s3Client == null)
+        return null;
 
       try {
+        ObjectMapper mapper = new ObjectMapper();
         String articleJson = mapper.writeValueAsString(article);
-        String key = String.format("%s:%s",KeyNameSpace.kHashTagArticle, url);
-        ops.set(key, articleJson);
+
+        String objectKey = getS3ObjectKey("hashtag",url);
+        s3Client.putObject(bucketName, objectKey, articleJson);
+        return objectKey;
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-      return;
+      return "";
+    }
+
+    private String getS3ObjectKey(String hashtag, String url) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("article/");
+        sb.append(hashtag);
+        sb.append('/');
+        sb.append(getMD5(url));
+        sb.append(".json");
+        return sb.toString();
+    }
+    private String  getMD5(String str) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(str.getBytes(),0,str.length());
+            return new BigInteger(1,md.digest()).toString(16);
+
+        } catch (Exception ex) {
+
+        }
+        return null;
     }
 }
