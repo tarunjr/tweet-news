@@ -59,6 +59,8 @@ public class RedisRealtimeView  implements RealtimeView{
 															Integer.valueOf(properties.getProperty("redis.server.port")));
     } catch (IOException e) {
 			e.printStackTrace();
+		} catch (NumberFormatException nfex) {
+			nfex.printStackTrace();
 		}
 		return jedis;
 	}
