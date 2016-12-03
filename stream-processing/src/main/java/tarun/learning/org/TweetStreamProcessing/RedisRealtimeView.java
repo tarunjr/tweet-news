@@ -56,7 +56,7 @@ public class RedisRealtimeView  implements RealtimeView{
 		try (InputStream props = Resources.getResource("redis.props").openStream()) {
             properties.load(props);
 						jedis = new Jedis(properties.getProperty("redis.server.url"),
-															properties.getProperty("redis.server.port"));
+															Integer.valueOf(properties.getProperty("redis.server.port")));
     } catch (IOException e) {
 			e.printStackTrace();
 		}
