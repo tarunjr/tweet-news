@@ -3,6 +3,9 @@ package tarun.learning.org.TweetStreamProcessing;
 import java.util.List;
 import java.util.Map;
 import java.lang.StringBuilder;
+import java.util.Properties;
+
+import com.google.common.io.Resources;
 
 import redis.clients.jedis.Jedis;
 
@@ -12,7 +15,7 @@ public class RedisRealtimeView  implements RealtimeView{
 	private Jedis jedis;
 
 	public RedisRealtimeView() {
-		jedis = new Jedis("127.0.0.1", 6379);
+		jedis = getConfiguredJedis();
 	}
 	public void updateHashtagStats(String hashTag, Map<String, String> statsMap) {
 		String key = "hashtag:" + hashTag;
@@ -45,5 +48,18 @@ public class RedisRealtimeView  implements RealtimeView{
 	}
 	public void close() {
 		jedis.close();
+	}
+	private Jedis getConfiguredJedis() {
+		Jedis jedis = null;
+
+		Properties properties = new Properties();
+		try (InputStream props = Resources.getResource("redis.props").openStream()) {
+            properties.load(props);
+						jedis = new Jedis(properties.getProperty("redis.server.url"),
+															properties.getProperty("redis.server.port"));
+    } catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jedis;
 	}
 }
