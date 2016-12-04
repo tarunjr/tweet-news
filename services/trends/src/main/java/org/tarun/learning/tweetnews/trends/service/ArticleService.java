@@ -16,6 +16,7 @@ import org.tarun.learning.tweetnews.trends.model.Article;
 
 import org.springframework.web.client.RestTemplate;
 import org.tarun.learning.tweetnews.trends.repository.ArticleRepository;
+import org.tarun.learning.tweetnews.trends.service.RedisCachingService;
 
 @Service
 public class ArticleService {
@@ -24,10 +25,10 @@ public class ArticleService {
     private String articleServiceEndpoint;
 
     private final ArticleRepository repository;
-    private final CachingService cachingService;
+    private final RedisCachingService cachingService;
 
     @Autowired
-    public ArticleService(CachingService cachingService,
+    public ArticleService(RedisCachingService cachingService,
                           ArticleRepository repository) {
         this.repository = repository;
         this.cachingService = cachingService;
