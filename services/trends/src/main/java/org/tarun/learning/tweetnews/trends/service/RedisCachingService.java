@@ -18,17 +18,14 @@ public class RedisCachingService implements CachingService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    private ValueOperations<String,String> opsForValue;
-
-    public RedisCachingService() {
-        opsForValue = redisTemplate.opsForValue();
-    }
     @Override
     public String get(String key) {
+        ValueOperations<String,String> opsForValue = redisTemplate.opsForValue();
         return opsForValue.get(key);
     }
     @Override
     public void set(String key, String value) {
+        ValueOperations<String,String> opsForValue = redisTemplate.opsForValue();
         opsForValue.set(key, value);
     }
 }
