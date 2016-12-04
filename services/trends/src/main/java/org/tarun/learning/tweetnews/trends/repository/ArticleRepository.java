@@ -53,6 +53,9 @@ public class ArticleRepository {
         String objectKey = getS3ObjectKey("hashtag",url);
         System.out.println(objectKey);
         try {
+          if (!s3Client.doesObjectExist(bucketName,objectKey))
+            return null;
+
           URL articleUrl = null;
           articleUrl = s3Client.getUrl(bucketName, objectKey);
           System.out.println(articleUrl.toString());
@@ -60,7 +63,7 @@ public class ArticleRepository {
         } catch (Exception ex) {
           ex.printStackTrace();
         }
-        return "";
+        return null;
     }
     public Article getExpanded(String url) {
         if (s3Client == null)
