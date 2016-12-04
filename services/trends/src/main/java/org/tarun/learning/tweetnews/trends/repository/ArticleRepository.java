@@ -49,10 +49,13 @@ public class ArticleRepository {
         if (s3Client == null)
           return null;
 
+        System.out.println("get url from S3");
         String objectKey = getS3ObjectKey("hashtag",url);
+        System.out.println(objectKey);
         try {
           URL articleUrl = null;
           articleUrl = s3Client.getUrl(bucketName, objectKey);
+          System.out.println(articleUrl.toString());
           return articleUrl.toString();
         } catch (Exception ex) {
           ex.printStackTrace();
@@ -79,12 +82,13 @@ public class ArticleRepository {
     public String save(String url, Article  article) {
       if (s3Client == null)
         return null;
-
+      System.out.println("saving into S3");
       try {
         ObjectMapper mapper = new ObjectMapper();
         String articleJson = mapper.writeValueAsString(article);
-
+        System.out.println(articleJson);
         String objectKey = getS3ObjectKey("hashtag",url);
+        System.out.println(objectKey);
         s3Client.putObject(bucketName, objectKey, articleJson);
         return objectKey;
       } catch (Exception ex) {
@@ -109,7 +113,7 @@ public class ArticleRepository {
             return new BigInteger(1,md.digest()).toString(16);
 
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
         return null;
     }

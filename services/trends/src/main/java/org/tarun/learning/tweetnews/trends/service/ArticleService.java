@@ -24,6 +24,7 @@ public class ArticleService {
     @Value("${service.article.url:127.0.0.1:8000}")
     private String articleServiceEndpoint;
 
+    @
     private final ArticleRepository repository;
     private final RedisCachingService cachingService;
 
@@ -38,16 +39,22 @@ public class ArticleService {
         String key = "art:url:" + url;
         String articleUrl = cachingService.get(key);
         if (articleUrl != null) {
+            System.out.println("found in-mem cache");
+            System.out.println(articleUrl);
             return CompletableFuture.completedFuture(articleUrl);
         }
         articleUrl= repository.getUrl(url);
         if (articleUrl != null) {
+            System.out.println("found S3");
+            System.out.println(articleUrl);
             return CompletableFuture.completedFuture(articleUrl);
         }
 
         CompletableFuture<String> future = new CompletableFuture<String>();
             getArticleAsync(getArticleServiceUri(), url).thenAccept(article -> {
+                System.out.println("fetched from extraction");
                 repository.save(url, article);
+
                 String u = repository.getUrl(url);
                 cachingService.set(key, u);
                 future.complete(u);
@@ -97,6 +104,7 @@ public class ArticleService {
         System.out.println(json);
         ObjectMapper mapper = new ObjectMapper();
         try {
+            System.out.println(json);
             article = mapper.readValue(json, Article.class);
         } catch (IOException ex) {
             article = null;
