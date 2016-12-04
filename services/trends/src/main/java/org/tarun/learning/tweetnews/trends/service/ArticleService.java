@@ -24,7 +24,6 @@ public class ArticleService {
     @Value("${service.article.url:127.0.0.1:8000}")
     private String articleServiceEndpoint;
 
-    @
     private final ArticleRepository repository;
     private final RedisCachingService cachingService;
 
