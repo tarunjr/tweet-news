@@ -9,16 +9,9 @@ import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.Executor;
 
-import org.tarun.learning.tweetnews.trends.service.CachingService;
-import org.tarun.learning.tweetnews.trends.service.RedisCachingService;
-
 @SpringBootApplication
 @EnableAsync
 public class Application extends AsyncConfigurerSupport {
-    @Bean
-    public CachingService cachingService() {
-      return new RedisCachingService();
-    }
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
