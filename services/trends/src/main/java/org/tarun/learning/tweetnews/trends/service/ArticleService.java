@@ -61,8 +61,8 @@ public class ArticleService {
                 cachingService.set(key,cfUrl );
                 /* cache the JSON also
                 String keyJson = "article:json:" + url;
-                cachingService.set(keyJson,article);
-                future.complete(cfUrl); */
+                cachingService.set(keyJson,article); */
+                future.complete(cfUrl);
             });
         return future;
     }

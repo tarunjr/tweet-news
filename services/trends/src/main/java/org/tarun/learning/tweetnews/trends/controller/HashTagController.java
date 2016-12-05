@@ -72,7 +72,7 @@ public class HashTagController {
 
       return urls;
     }
-    private List<Article> getArticlesExpanded(HashTag hashtag) {
+    private List<Article> getArticle(HashTag hashtag) {
 
       List<CompletableFuture<Article>> futures =
                 hashtag.getUrls().stream()
