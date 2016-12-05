@@ -35,7 +35,7 @@ public class ArticleService {
         this.cachingService = cachingService;
     }
     @Async
-    public CompletableFuture<String> getUrlAsync(String url){
+    public CompletableFuture<String> getCompactAsync(String url){
         String key = "article:url:" + url;
         String articleUrl = cachingService.get(key);
         if (articleUrl != null) {

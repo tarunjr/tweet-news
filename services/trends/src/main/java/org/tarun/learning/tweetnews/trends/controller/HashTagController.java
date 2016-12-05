@@ -42,7 +42,7 @@ public class HashTagController {
 
     @RequestMapping("/expanded")
     public List<HashTag> topHashtags(@RequestParam(value="limit", defaultValue="5") Integer limit,
-                                     @RequestParam(value="articleformat", defaultValue="link") String articleformat) {
+                                     @RequestParam(value="articleformat", defaultValue="compact") String articleformat) {
         limit = Math.min(10, limit);
         System.out.println(String.format("limit:{0}", limit));
 
@@ -62,17 +62,17 @@ public class HashTagController {
     private List<String> getArticleUrl(HashTag hashtag) {
 
       List<CompletableFuture<String>> futures =
-              hashtag.getUrls().stream()
-                      .map(url -> articleService.getUrlAsync(url))
-                      .collect(Collectors.toList());
+          hashtag.getUrls().stream()
+                  .map(url -> articleService.getCompactAsync(url))
+                  .collect(Collectors.toList());
 
       List<String> urls = futures.stream()
-              .map(CompletableFuture::join)
-              .collect(Collectors.toList());
+          .map(CompletableFuture::join)
+          .collect(Collectors.toList());
 
       return urls;
     }
-    private List<Article> getArticle(HashTag hashtag) {
+    private List<Article> getArticlesExpanded(HashTag hashtag) {
 
       List<CompletableFuture<Article>> futures =
                 hashtag.getUrls().stream()
