@@ -13,13 +13,14 @@ import org.springframework.beans.factory.annotation.Value;
 @Service
 public class CloudFrontS3Mapper{
     @Value("${service.article.cloudfront.url}")
-    private String cloudFrontDistributionDNS;
+    private final String cloudFrontDistributionDNS;
 
     @Value("${service.article.s3.url}")
-    private String s3BucketUrlPath;
+    private final String s3BucketUrlPath;
 
     public String mapToCloudFrontUrl(String s3ObjectUrl) {
         String[] tokens = s3ObjectUrl.split("/");
+        System.out.println("mapToCloudFrontUrl:" + cloudFrontDistributionDNS);
         StringBuilder sb = new StringBuilder();
         sb.append(cloudFrontDistributionDNS);
         sb.append('/');
