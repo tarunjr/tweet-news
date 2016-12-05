@@ -47,7 +47,10 @@ public class ArticleService {
         if (articleUrl != null) {
             System.out.println("found S3");
             System.out.println(articleUrl);
-            return CompletableFuture.completedFuture(articleUrl);
+            String cfUrl = urlMapper.mapToCloudFrontUrl(articleUrl);
+            // Map to cloudfront url from S3 urls and cache it in-mem
+            cachingService.set(key,cfUrl );
+            return CompletableFuture.completedFuture(cfUrl);
         }
 
         CompletableFuture<String> future = new CompletableFuture<String>();
