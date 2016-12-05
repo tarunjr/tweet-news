@@ -26,6 +26,7 @@ public class ArticleService {
 
     private final ArticleRepository repository;
     private final RedisCachingService cachingService;
+    private final CloudFrontS3Mapper urlMapper = new CloudFrontS3Mapper();
 
     @Autowired
     public ArticleService(RedisCachingService cachingService,
@@ -35,7 +36,7 @@ public class ArticleService {
     }
     @Async
     public CompletableFuture<String> getUrlAsync(String url){
-        String key = "art:url:" + url;
+        String key = "article:url:" + url;
         String articleUrl = cachingService.get(key);
         if (articleUrl != null) {
             System.out.println("found in-mem cache");
@@ -54,16 +55,21 @@ public class ArticleService {
                 System.out.println("fetched from extraction");
                 repository.save(url, article);
 
-                String u = repository.getUrl(url);
-                cachingService.set(key, u);
-                future.complete(u);
+                String s3Url = repository.getUrl(url);
+                String cfUrl = urlMapper.mapToCloudFrontUrl(s3Url);
+                // Map to cloudfront url from S3 urls and cache it in-mem
+                cachingService.set(key,cfUrl );
+                /* cache the JSON also
+                String keyJson = "article:json:" + url;
+                cachingService.set(keyJson,article);
+                future.complete(cfUrl); */
             });
         return future;
     }
     @Async
     public CompletableFuture<Article> getExapndedAsync(String url){
         Article article = null;
-        String key = "art:url:" + url;
+        String key = "article:json:" + url;
         String articleJson = cachingService.get(key);
         if (articleJson != null) {
           try {

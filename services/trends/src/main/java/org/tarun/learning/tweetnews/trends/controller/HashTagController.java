@@ -44,6 +44,8 @@ public class HashTagController {
     public List<HashTag> topHashtags(@RequestParam(value="limit", defaultValue="5") Integer limit,
                                      @RequestParam(value="articleformat", defaultValue="link") String articleformat) {
         limit = Math.min(10, limit);
+        System.out.println(String.format("limit:{0}", limit));
+
         List<HashTag> hashTags = hashTagService.getTop(limit);
 
         for(HashTag hashtag: hashTags) {
