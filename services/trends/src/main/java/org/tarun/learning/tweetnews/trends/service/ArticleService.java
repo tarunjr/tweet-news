@@ -26,13 +26,15 @@ public class ArticleService {
 
     private final ArticleRepository repository;
     private final RedisCachingService cachingService;
-    private final CloudFrontS3Mapper urlMapper = new CloudFrontS3Mapper();
+    private final CloudFrontS3Mapper urlMapper;
 
     @Autowired
     public ArticleService(RedisCachingService cachingService,
-                          ArticleRepository repository) {
+                          ArticleRepository repository,
+                          CloudFrontS3Mapper urlMapper) {
         this.repository = repository;
         this.cachingService = cachingService;
+        this.urlMapper = urlMapper;
     }
     @Async
     public CompletableFuture<String> getCompactAsync(String url){
