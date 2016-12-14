@@ -21,4 +21,8 @@ public class HealthCheckController {
         System.out.println(mapper.mapToCloudFrontUrl("https://s3.amazonaws.com/articles-cache/article/hashtag/2358671059a576a047317f5a762bee17.json"));
         return "OK";
     }
+    @RequestMapping("/loaderio-b4b440f2ebea1f101004c0d45b718f88/")
+    public String loadercode() {
+        return "loaderio-b4b440f2ebea1f101004c0d45b718f88";
+    }
 }
