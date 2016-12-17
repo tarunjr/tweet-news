@@ -8,4 +8,6 @@ public class KeyNameSpace {
   public static final String kHashTagUrls = "hu";
   public static final String kHashTagTweets = "ht";
   public static final String kHashTagArticle = "article";
+  public static final String kTweet = "tweet";
+  public static final String kTopHashTags = "hashtags:top";
 }

@@ -1,3 +1,4 @@
+/*
 var Article = React.createClass({
   render: function() {
     return (
@@ -6,6 +7,39 @@ var Article = React.createClass({
       <div className="email">
         <div><h4><a href={this.props.id} target="_blank">{this.props.title}</a></h4></div>
         <div className="body" dangerouslySetInnerHTML={{__html: this.props.summary}}></div>
+      </div>
+      </td>
+      </tr>
+    );
+  }
+});
+*/
+
+var Article = React.createClass({
+  getInitialState: function(){
+    return { id: null , title: null, summary: null};
+  },
+  componentDidMount: function() {
+    var xhr = createCORSRequest('GET', this.props.source);
+    if (!xhr) {
+      throw new Error('CORS not supported');
+    }
+    xhr.onload = function() {
+      var result = JSON.parse(xhr.responseText);
+      this.setState(result);
+    }.bind(this);
+    xhr.onerror = function() {
+      console.log('There was an error!');
+    };
+    xhr.send();
+  },
+  render: function() {
+    return (
+      <tr>
+      <td>
+      <div className="email">
+        <div><h4><a href={this.state.id} target="_blank">{this.state.title}</a></h4></div>
+        <div className="body" dangerouslySetInnerHTML={{__html: this.state.summary}}></div>
       </div>
       </td>
       </tr>
@@ -29,13 +63,9 @@ var ArticleList = React.createClass({
     var article_list = this.props.articles.map(function(article) {
       return (
         /*
-        <ArticleListItem key={article.id}
-                       source={article.source}
-                       title={article.title}
-                       beginning={article.beginning}
-                       on_click={this.props.onSelectArticle.bind(null, article.url)} />
-                       */
-         <Article key={article.id} source={article.source} title={article.title} id={article.id} summary={article.summary}/>
+         <Article key={article.id} source={article.source} title={article.title} id={article.id} summary={article.summary} />
+         */
+         <Article key={article.id} url={article.url}/>
       );
     }.bind(this));
 
@@ -188,12 +218,6 @@ var App = React.createClass({
     }
     xhr.onload = function() {
       var result = JSON.parse(xhr.responseText);
-      // TODO get the article details
-      //result.map(function(hashtagbox) {
-      //    hashtagbox['articles'] = [];
-      //});
-      // END TODO
-
       this.setState({
             hastagbox_id: result[0].tag,
             hashtagboxes: result

@@ -61,16 +61,25 @@ public class HashTagController {
     }
     private List<String> getArticleUrl(HashTag hashtag) {
 
-      List<CompletableFuture<String>> futures =
-          hashtag.getUrls().stream()
+      // Optimization for cache
+      List<String> misses = new ArrayList<String>();
+      List<String> cachedUrls = new ArrayList<String>();
+      articleService.getCompactCached(hashtag, misses, cachedUrls);
+
+      if(misses.size() > 0) {
+        List<CompletableFuture<String>> futures =
+          misses.stream()
                   .map(url -> articleService.getCompactAsync(url))
                   .collect(Collectors.toList());
 
-      List<String> urls = futures.stream()
+        List<String> urls = futures.stream()
           .map(CompletableFuture::join)
           .collect(Collectors.toList());
 
-      return urls;
+          cachedUrls.addAll(urls);
+      }
+
+      return cachedUrls;
     }
     private List<Article> getArticlesExpanded(HashTag hashtag) {
 

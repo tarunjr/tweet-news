@@ -20,7 +20,7 @@ public class UrlRepository {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
-
+    /*
     public List<Url> getAll() {
         HashOperations<String,String,String> hashOps = redisTemplate.opsForHash();
         List<Url> urls = new ArrayList<Url>();
@@ -37,12 +37,28 @@ public class UrlRepository {
         }
         return urls;
     }
-    public List<Url> getTop(int top) {
+    */
+    public List<Url> getAll() {
         List<Url> urls = new ArrayList<Url>();
 
         ZSetOperations<String,String> zSetOps = redisTemplate.opsForZSet();
         Set<ZSetOperations.TypedTuple<String>> entries = zSetOps.reverseRangeWithScores(
-                KeyNameSpace.kUrls,0,top);
+                KeyNameSpace.kUrls,0,Long.MAX_VALUE);
+
+        for(ZSetOperations.TypedTuple<String> entry: entries) {
+            Url url = new Url();
+            url.setUrl(entry.getValue());
+            url.setCount((new Double(entry.getScore())).longValue());
+            urls.add(url);
+        }
+        return urls;
+    }
+    public List<Url> getTop(int top) {
+        List<Url> urls = new ArrayList<Url>();
+
+        ZSetOperations<String,String> zSetOps = redisTemplate.opsForZSet();
+        Set<ZSetOperations.TypedTuple<String>> entries = zSetOps.reverseRangeByScoreWithScores(
+                                    KeyNameSpace.kUrls,0,Long.MAX_VALUE, 0, top);
 
         for(ZSetOperations.TypedTuple<String> entry: entries) {
             Url url = new Url();

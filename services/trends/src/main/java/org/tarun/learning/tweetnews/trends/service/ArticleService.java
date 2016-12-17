@@ -13,28 +13,46 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
 import org.tarun.learning.tweetnews.trends.model.Article;
+import org.tarun.learning.tweetnews.trends.model.HashTag;
 
 import org.springframework.web.client.RestTemplate;
 import org.tarun.learning.tweetnews.trends.repository.ArticleRepository;
 import org.tarun.learning.tweetnews.trends.service.RedisCachingService;
+import org.tarun.learning.tweetnews.trends.service.ExtractionServiceConnectionFactory;
+import org.tarun.learning.tweetnews.trends.service.ServiceConnection;
 
 @Service
 public class ArticleService {
 
-    @Value("${service.article.url:127.0.0.1:8000}")
-    private String articleServiceEndpoint;
-
     private final ArticleRepository repository;
     private final RedisCachingService cachingService;
     private final CloudFrontS3Mapper urlMapper;
+    private final ExtractionServiceConnectionFactory exConnFactory;
 
     @Autowired
     public ArticleService(RedisCachingService cachingService,
                           ArticleRepository repository,
-                          CloudFrontS3Mapper urlMapper) {
+                          CloudFrontS3Mapper urlMapper,
+                          ExtractionServiceConnectionFactory connFactory) {
         this.repository = repository;
         this.cachingService = cachingService;
         this.urlMapper = urlMapper;
+        this.exConnFactory = connFactory;
+    }
+
+    public void getCompactCached(HashTag hashtag, List<String> misses, List<String> articleUrls) {
+
+      for(String url: hashtag.getUrls()) {
+        String key = "article:url:" + url;
+        String articleUrl = cachingService.get(key);
+        if (articleUrl != null) {
+            System.out.println("found in-mem cache");
+            System.out.println(articleUrl);
+            articleUrls.add(articleUrl);
+        } else {
+            misses.add(url);
+        }
+      }
     }
     @Async
     public CompletableFuture<String> getCompactAsync(String url){
@@ -104,19 +122,24 @@ public class ArticleService {
         return future;
     }
     private String getArticleServiceUri() {
-        return String.format("http://%s/article/extract", articleServiceEndpoint);
+        ServiceConnection conn = exConnFactory.getConnection();
+        return String.format("http://%s:%s/article/extract", conn.getHost(), Integer.toString(conn.getPort()));
     }
     private CompletableFuture<Article> getArticleAsync(String uri, String articleUrl) {
+
         Article article = null;
         RestTemplate restTemplate = new RestTemplate();
         String fullUri = String.format("%s?url=%s", uri, articleUrl);
+        System.out.println(fullUri);
         String json = restTemplate.getForObject(fullUri, String.class);
-        System.out.println(json);
+
         ObjectMapper mapper = new ObjectMapper();
         try {
             System.out.println(json);
             article = mapper.readValue(json, Article.class);
         } catch (IOException ex) {
+            if(json != null)
+              System.out.println(json);
             article = null;
         }
         return CompletableFuture.completedFuture(article);

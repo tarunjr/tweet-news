@@ -22,7 +22,7 @@ import org.tarun.learning.tweetnews.trends.model.HashTag;
 public class HashTagRepository {
   @Autowired
   private StringRedisTemplate redisTemplate;
-
+  /*
   public List<HashTag> getAll() {
     HashOperations<String,String,String> hashOps = redisTemplate.opsForHash();
     List<HashTag> hashTags = new ArrayList<HashTag>();
@@ -39,13 +39,13 @@ public class HashTagRepository {
     }
     return hashTags;
   }
-
-  public List<HashTag> getTop(int top) {
+  */
+  public List<HashTag> getAll() {
     List<HashTag> hashTags = new ArrayList<HashTag>();
 
     ZSetOperations<String,String> zSetOps = redisTemplate.opsForZSet();
     Set<ZSetOperations.TypedTuple<String>> entries = zSetOps.reverseRangeWithScores(
-                                KeyNameSpace.kHashTags,0,top);
+                                KeyNameSpace.kHashTags,0,Long.MAX_VALUE);
 
     for(ZSetOperations.TypedTuple<String> entry: entries) {
         HashTag ht = new HashTag();
@@ -53,57 +53,72 @@ public class HashTagRepository {
 
         ht.setTag(hashtag);
         ht.setCount((new Double(entry.getScore())).longValue());
-        ht.setTopTweets(getAssociatedTweets(hashtag, top));
-        ht.setUrls(getNItems(getAssociatedUrls(hashtag), top));
 
         hashTags.add(ht);
     }
     return hashTags;
   }
-    private Set<String> getAssociatedUrls(String hashtag) {
-        SetOperations<String,String> setOps = redisTemplate.opsForSet();
 
+  public List<HashTag> getTop(int top) {
+
+    List<HashTag> hashTags = getTopHashtags(top);
+
+    for(HashTag ht : hashTags) {
+        ht.setTopTweets(getAssociatedTweets(ht.getTag(), top));
+        ht.setUrls(getAssociatedUrls(ht.getTag(), top));
+    }
+    return hashTags;
+  }
+  private List<HashTag> getTopHashtags(int top) {
+      ZSetOperations<String,String> zSetOps = redisTemplate.opsForZSet();
+      Set<ZSetOperations.TypedTuple<String>> entries = zSetOps.rangeWithScores(
+                                KeyNameSpace.kTopHashTags,0,top);
+
+      List<HashTag> hashTags = new ArrayList<HashTag>();
+
+      for(ZSetOperations.TypedTuple<String> entry: entries) {
+        HashTag ht = new HashTag();
+        String hashtag = entry.getValue();
+
+        ht.setTag(hashtag);
+        ht.setCount((new Double(entry.getScore())).longValue());
+
+        hashTags.add(ht);
+    }
+    return hashTags;
+  }
+    private Set<String> getAssociatedUrls(String hashtag, int top) {
+        System.out.println(String.format("getAssociatedUrls: %s", hashtag));
         String key = KeyNameSpace.kHashTagUrls + ":" + hashtag;
-        System.out.println(key);
-        Set<String> urls = setOps.members(key);
 
+        ZSetOperations<String,String> zSetOps = redisTemplate.opsForZSet();
+        Set<ZSetOperations.TypedTuple<String>> entries = zSetOps.reverseRangeByScoreWithScores(
+                key, 0, Long.MAX_VALUE, 0, top);
+        Set<String> urls = new HashSet<String>();
+        for(ZSetOperations.TypedTuple<String> entry: entries) {
+            System.out.println(entry.getValue());
+            urls.add(entry.getValue());
+        }
         return urls;
     }
-    private Set<String> getNItems(Set<String> input, int N) {
-        int count = 0;
-        Set<String> output = new HashSet<String>();
-        for(String s: input) {
-            if(++count < N)
-                output.add(s);
-            else
-                break;
-        }
-        return output;
-    }
+
     private List<Tweet> getAssociatedTweets(String hashtag, int top) {
         List<Tweet> topTweets = new ArrayList<Tweet>();
 
         ObjectMapper mapper = new ObjectMapper();
         ZSetOperations<String,String> zSetOps = redisTemplate.opsForZSet();
         String key = KeyNameSpace.kHashTagTweets + ":" + hashtag;
-        System.out.println(key);
+        //System.out.println(key);
 
-        Set<String> entries = zSetOps.reverseRange(
-                key,0,top);
+        String json = null;
+        Set<ZSetOperations.TypedTuple<String>> entries = zSetOps.reverseRangeByScoreWithScores(
+                  key,0,Long.MAX_VALUE, 0, top);
 
-        for(String entry: entries) {
+        for(ZSetOperations.TypedTuple<String> entry: entries) {
             try {
-                String json = entry;
-                System.out.println(json);
-                Tweet tweet = mapper.readValue(json, Tweet.class);
-                System.out.println("Have an object");
+                String tweetId = entry.getValue();
+                Tweet tweet = getTweet(tweetId);
                 topTweets.add(tweet);
-            } catch (com.fasterxml.jackson.core.JsonProcessingException jpex) {
-                System.out.println(jpex);
-                jpex.printStackTrace();
-            } catch (java.io.IOException iox) {
-                System.out.println(iox);
-                iox.printStackTrace();
             } catch (Exception ex) {
                 System.out.println(ex);
                 ex.printStackTrace();
@@ -111,5 +126,19 @@ public class HashTagRepository {
         }
         System.out.println(topTweets.size());
         return  topTweets;
+    }
+    private Tweet getTweet(String tweetId) {
+      HashOperations<String,String,String> hashOps = redisTemplate.opsForHash();
+      String key = KeyNameSpace.kTweet + ":" +  tweetId;
+
+      Map<String, String> entry  =  hashOps.entries(key);
+      Tweet tweet = new Tweet();
+      tweet.setId(Long.decode(entry.get("id")));
+      tweet.setText(entry.get("text"));
+      tweet.setHashtag(entry.get("hashtag"));
+      tweet.setScreenname(entry.get("setScreenname"));
+      tweet.setPopularitycount(Integer.decode(entry.get("popularitycount")));
+
+      return tweet;
     }
 }

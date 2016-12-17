@@ -1,0 +1,20 @@
+# Add Hashtag data
+HMSET hashtag:MODI hashtag "MODI" count "100"
+HMSET hashtag:INDvsENG hashtag "INDvsENG" count "80"
+ZADD hashtags 100 "MODI" 80 "INDvsENG"
+
+HMSET url:https://twitter.com/i/streams/category/687094923246440476 url "https://twitter.com/i/streams/category/687094923246440476" count "100"
+HMSET url:https://t.co/WIvKvuJwEK  url  "https://t.co/WIvKvuJwEK"  count  "80"
+ZADD urls 100 "https://twitter.com/i/streams/category/687094923246440476"  80 "https://t.co/WIvKvuJwEK"
+
+ZADD hu:MODI 100 "https://twitter.com/i/streams/category/687094923246440476"  80 "https://t.co/WIvKvuJwEK"
+ZADD hu:INDvsENG 100 "https://twitter.com/i/streams/category/687094923246440476"  80 "https://t.co/WIvKvuJwEK"
+
+
+# Addd tweets data
+HMSET tweet:10000 id '10000' text 'First tweet on this subject' hashtag 'INDvsENG' screenname '@vikas' popularitycount '123'
+HMSET tweet:10001 id '10001' text 'Second tweet on this subject' hashtag 'INDvsENG' screenname '@tarun' popularitycount '321'
+ZADD ht:INDvsENG 123 '10000' 321 '10001'
+ZADD ht:MODI 123 '10000' 321 '10001'
+
+SADD hashtags:top 'MODI' 'INDvsENG'
