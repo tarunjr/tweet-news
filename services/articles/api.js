@@ -9,6 +9,6 @@ module.exports = function() {
 
 	api.post('/articles/', artcile.post);
   api.get('/articles/', artcile.get);
-
+  api.get('/healthcheck', artcile.health);
   return api;
 }

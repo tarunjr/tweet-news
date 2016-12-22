@@ -1,0 +1,3 @@
+kubectl run  extraction --image=tn-extraction:v1.0 --replicas=1 --port=8000
+kubectl expose deployment extraction --type=NodePort
+kubectl scale --replicas=2 deployment/extraction

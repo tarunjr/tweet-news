@@ -1,0 +1,122 @@
+[
+  {
+    "tag": "Baramulla",
+    "count": 77,
+    "articles": [
+
+    ],
+    "articleUrls": [
+      "https://d319rqote2bkqz.cloudfront.net/1ae8cc9eabc54cc3b201cf2c292d72e4.json",
+      "https://d319rqote2bkqz.cloudfront.net/74401e0a1032bee1841de8dcbe249fe5.json",
+      "https://d319rqote2bkqz.cloudfront.net/66b3fed2937a96f9149dc4360b7e9ed8.json",
+      "https://d319rqote2bkqz.cloudfront.net/ea4da073b1ecfaa8941a2462c9c561a2.json"
+    ],
+    "urls": [
+
+    ],
+    "topTweets": [
+      {
+        "id": 782658416191778816,
+        "hashtag": "Baramulla",
+        "text": "#UPDATE #Baramulla incident: Combing operations on, 2 terrorists neutralised, confirms army",
+        "screenname": "TimesNow",
+        "popularitycount": 669
+      },
+      {
+        "id": 782656902861815809,
+        "hashtag": "Baramulla",
+        "text": "#Baramulla Incident situation contained and under control: Army https://t.co/UPYbHVdqTq",
+        "screenname": "TimesNow",
+        "popularitycount": 466
+      },
+      {
+        "id": 782670492171837440,
+        "hashtag": "Baramulla",
+        "text": "#Baramulla incident: Situation under control https://t.co/il4MXxzFZx",
+        "screenname": "TimesNow",
+        "popularitycount": 359
+      },
+      {
+        "id": 782651029745569792,
+        "hashtag": "Baramulla",
+        "text": "#UPDATE #Baramulla firing: Heavy exchange of fire between terrorists and forces. Reports say, two BSF jawans injured",
+        "screenname": "TimesNow",
+        "popularitycount": 265
+      },
+      {
+        "id": 782651177708101632,
+        "hashtag": "Baramulla",
+        "text": "#UPDATE #Baramulla firing: Report suggest army camp security not breached",
+        "screenname": "TimesNow",
+        "popularitycount": 246
+      },
+      {
+        "id": 782654498820853760,
+        "hashtag": "Baramulla",
+        "text": "#UPDATE #Baramulla firing: Reports say, Home Minister, Chief of the Army Staff and National Security Agency briefed on the attack",
+        "screenname": "TimesNow",
+        "popularitycount": 232
+      }
+    ]
+  },
+  {
+    "tag": "UPDATE",
+    "count": 27,
+    "articles": [
+
+    ],
+    "articleUrls": [
+      "https://d319rqote2bkqz.cloudfront.net/1ae8cc9eabc54cc3b201cf2c292d72e4.json",
+      "https://d319rqote2bkqz.cloudfront.net/74401e0a1032bee1841de8dcbe249fe5.json",
+      "https://d319rqote2bkqz.cloudfront.net/66b3fed2937a96f9149dc4360b7e9ed8.json",
+      "https://d319rqote2bkqz.cloudfront.net/ea4da073b1ecfaa8941a2462c9c561a2.json"
+    ],
+    "urls": [
+
+    ],
+    "topTweets": [
+      {
+        "id": 782658416191778816,
+        "hashtag": "UPDATE",
+        "text": "#UPDATE #Baramulla incident: Combing operations on, 2 terrorists neutralised, confirms army",
+        "screenname": "TimesNow",
+        "popularitycount": 669
+      },
+      {
+        "id": 782647176258170881,
+        "hashtag": "UPDATE",
+        "text": "#UPDATE Baramulla firing: Quick response team at spot. Reports say, two terrorists neutralised by forces",
+        "screenname": "TimesNow",
+        "popularitycount": 594
+      },
+      {
+        "id": 782639817360146433,
+        "hashtag": "UPDATE",
+        "text": "#UPDATE Grenades lobbed near army camp in Baramulla. Heavy exchange of fire between terrorists and forces",
+        "screenname": "TimesNow",
+        "popularitycount": 497
+      },
+      {
+        "id": 782651029745569792,
+        "hashtag": "UPDATE",
+        "text": "#UPDATE #Baramulla firing: Heavy exchange of fire between terrorists and forces. Reports say, two BSF jawans injured",
+        "screenname": "TimesNow",
+        "popularitycount": 265
+      },
+      {
+        "id": 782651177708101632,
+        "hashtag": "UPDATE",
+        "text": "#UPDATE #Baramulla firing: Report suggest army camp security not breached",
+        "screenname": "TimesNow",
+        "popularitycount": 246
+      },
+      {
+        "id": 782654498820853760,
+        "hashtag": "UPDATE",
+        "text": "#UPDATE #Baramulla firing: Reports say, Home Minister, Chief of the Army Staff and National Security Agency briefed on the attack",
+        "screenname": "TimesNow",
+        "popularitycount": 232
+      }
+    ]
+  }
+]

@@ -3,6 +3,9 @@ var async = require('async');
 var querystring = require('querystring');
 var http = require('http');
 
+exports.health = function(req, res) {
+ res.send("OK");
+}
 exports.post = function(req, res) {
 
 var urls = req.body.urls;

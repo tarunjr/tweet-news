@@ -1,0 +1,41 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "extraction-controller",
+    "labels": {
+      "state": "serving"
+    }
+  },
+  "spec": {
+    "replicas": 2,
+    "selector": {
+      "app": "extraction"
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "extraction"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "extraction-python",
+            "image": "tn-extraction:v1",
+            "ports": [
+              {
+                "containerPort": 8000,
+                "protocol": "TCP"
+              }
+            ],
+            "imagePullPolicy": "IfNotPresent"
+          }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst"
+      }
+    }
+  }
+}

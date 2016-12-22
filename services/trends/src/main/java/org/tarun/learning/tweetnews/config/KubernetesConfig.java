@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.tarun.learning.tweetnews.trends.service.ExtractionServiceConnectionFactory;
 
-@Profile("docker")
+@Profile("kubernetes")
 @Configuration
-public class DockerConfig {
-    @Value(value="#{systemEnvironment['REDIS_PORT_6379_TCP_ADDR']}")
+public class KubernetesConfig {
+    @Value(value="#{systemEnvironment['REDIS_DB_PORT_6379_TCP_ADDR']}")
     String redisHost;
 
-    @Value("#{systemEnvironment['REDIS_PORT_6379_TCP_PORT']}")
+    @Value("#{systemEnvironment['REDIS_DB_SERVICE_PORT']}")
     Integer redisPort;
 
     @Bean
@@ -28,7 +28,7 @@ public class DockerConfig {
     @Value(value="#{systemEnvironment['EXTRACTION_PORT_8000_TCP_ADDR']}")
     String extractionHost;
 
-    @Value("#{systemEnvironment['EXTRACTION_PORT_8000_TCP_PORT']}")
+    @Value("#{systemEnvironment['EXTRACTION_SERVICE_PORT']}")
     Integer extractionPort;
 
     @Bean
